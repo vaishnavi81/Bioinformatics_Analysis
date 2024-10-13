@@ -1,0 +1,71 @@
+Exome_Analysis_Assignment
+
+Summary of Workflow:
+
+#Download and Rename Fastq Files
+
+Download two sets of paired-end fastq files from SRA using prefetch and fastq-dump.
+
+Rename them as sample1_R1.fq, sample1_R2.fq, sample2_R1.fq, and sample2_R2.fq.
+
+#Downsampling (if needed)
+
+Use seqkit to subset the fastq files if they are too large.
+
+#Calculate Fastq Statistics
+
+Use seqkit stats to calculate total reads and total bases for each fastq file and store the results in a text file.
+
+#Quality Control (QC) and Trimming
+
+Perform QC checks using tools like FastQC.
+Trim the sequences if required based on the QC results.
+
+#Download and Index Reference Genome
+
+Download the human genome fasta file from UCSC (hg38) and index it using BWA (bwa index).
+
+#Alignment
+
+Align the paired-end fastq files using bwa mem and save the output in SAM format.
+
+#Convert SAM to BAM and Sort
+
+Convert SAM files to BAM using samtools view, then sort and index the BAM files with samtools sort and samtools index.
+
+#Calculate Alignment Statistics
+
+Use samtools flagstat and samtools stats to generate alignment statistics for each BAM file.
+
+#Mark Duplicates
+
+Mark duplicates using samtools markdup and generate statistics.
+
+#Variant Calling (GATK)
+
+Prepare the reference genome with gatk CreateSequenceDictionary and samtools faidx.
+Use GATK's HaplotypeCaller for variant calling and output in GVCF format.
+
+#Read Group Addition
+
+Add or replace read groups using GATK (AddOrReplaceReadGroups) for both samples.
+
+#Filter and Separate Variants
+
+Separate SNPs and indels using awk and store them in separate VCF files.
+
+#Comparative Analysis of Variants
+
+Identify common variants (SNPs and indels) between the two samples using awk scripts and store the results in VCF files.
+
+#Variant Annotation
+
+Annotate variants using an open-source tool (e.g., SnpEff or VEP).
+
+Resources:
+-SRA Toolkit 
+- SeqKit
+- BWA
+- SAMtools
+- GATK 
+- FastQC
